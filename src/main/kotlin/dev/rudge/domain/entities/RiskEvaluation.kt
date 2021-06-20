@@ -1,8 +1,8 @@
 package dev.rudge.domain.entities
 
 data class RiskEvaluation(
-    val auto: String,
-    val disability: String,
-    val home: String,
-    val life: String
+    val auto: InsuranceScore,
+    val disability: InsuranceScore,
+    val home: InsuranceScore,
+    val life: InsuranceScore
 )
