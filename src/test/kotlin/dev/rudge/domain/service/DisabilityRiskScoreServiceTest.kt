@@ -22,7 +22,7 @@ internal class DisabilityRiskScoreServiceTest {
 
     @Test
     fun `given an user information without vehicle when calculate risk score should return score INELIGIBLE`() {
-        val userInformation = UserInformationFactory.sample()
+        val userInformation = UserInformationFactory.sample(vehicle = null)
 
         val riskEvaluation = DisabilityRiskScoreService().calculate(userInformation)
 
@@ -31,7 +31,7 @@ internal class DisabilityRiskScoreServiceTest {
 
     @Test
     fun `given an user information without house when calculate risk score should return score INELIGIBLE`() {
-        val userInformation = UserInformationFactory.sample()
+        val userInformation = UserInformationFactory.sample(house = null)
 
         val riskEvaluation = DisabilityRiskScoreService().calculate(userInformation)
 
@@ -39,12 +39,12 @@ internal class DisabilityRiskScoreServiceTest {
     }
 
     @Test
-    fun `given a personal information when the age is over 60 years old should return score INELIGIBLE`() {
+    fun `given an user information with the age over 60 years old when calculate risk score should return score INELIGIBLE`() {
         val userInformation = UserInformationFactory.sample(age = 61)
 
         val riskEvaluation = DisabilityRiskScoreService().calculate(userInformation)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
+        assertEquals(InsuranceScore.INELIGIBLE, riskEvaluation)
     }
 
     @Test
@@ -82,21 +82,21 @@ internal class DisabilityRiskScoreServiceTest {
 
         val riskEvaluation = DisabilityRiskScoreService().calculate(userInformation)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
+        assertEquals(InsuranceScore.RESPONSIBLE, riskEvaluation)
     }
 
     @Test
-    fun `given a personal information when the user has dependents and all risk answers is true should deduct 1 risk points and return score REGULAR`() {
+    fun `given an user information with dependents and 3 risk answers true when calculate risk score should deduct 1 risk points and return score REGULAR`() {
         val userInformation =
             UserInformationFactory.sample(dependents = 1)
 
         val riskEvaluation = DisabilityRiskScoreService().calculate(userInformation)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
+        assertEquals(InsuranceScore.RESPONSIBLE, riskEvaluation)
     }
 
     @Test
-    fun `given a personal information when user is married and all risk answers is true should deduct 1 risk points and return score REGULAR`() {
+    fun `given an user information with married status and 3 risk answers true when calculate risk score should deduct 1 risk points and return score REGULAR`() {
         val userInformation =
             UserInformationFactory.sample(maritalStatus = MaritalStatus.MARRIED)
 

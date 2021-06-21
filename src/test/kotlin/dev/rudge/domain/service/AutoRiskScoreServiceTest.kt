@@ -64,7 +64,7 @@ internal class AutoRiskScoreServiceTest {
     }
 
     @Test
-    fun `given a personal information when the vehicle was produced in the last 5 years and all risk answers is true should add 1 risk points and return score RESPONSIBLE`() {
+    fun `given an user information with the vehicle age less than 5 and 3 risk answers true when calculate risk score should add 1 risk points and return score RESPONSIBLE`() {
         val userInformation =
             UserInformationFactory.sample(vehicle = Vehicle(4))
 

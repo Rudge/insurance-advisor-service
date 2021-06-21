@@ -26,7 +26,7 @@ internal class RiskEvaluationServiceTest {
     }
 
     @Test
-    fun `given a personal information when calculate risk with age less than 0 should throws exception`() {
+    fun `given an user information with age less than 0 when calculate risk should throws exception`() {
         val userInformation = UserInformationFactory.sample(age = -1)
 
         assertFailsWith(
@@ -38,7 +38,7 @@ internal class RiskEvaluationServiceTest {
     }
 
     @Test
-    fun `given a personal information when calculate risk with number of dependents less than 0 should throws exception`() {
+    fun `given an user information with number of dependents less than 0 when calculate risk should throws exception`() {
         val userInformation =
             UserInformationFactory.sample(dependents = -1)
 
@@ -51,7 +51,7 @@ internal class RiskEvaluationServiceTest {
     }
 
     @Test
-    fun `given a personal information when calculate risk with income less than 0 should throws exception`() {
+    fun `given an user information with income less than 0 when calculate risk should throws exception`() {
         val userInformation =
             UserInformationFactory.sample(income = -1)
 
@@ -64,8 +64,8 @@ internal class RiskEvaluationServiceTest {
     }
 
     @Test
-    fun `given a personal information when there are not 3 risk answers should throws exception`() {
-        val userInformation = UserInformationFactory.sample()
+    fun `given an user information without risk answers when calculate risk should throws exception`() {
+        val userInformation = UserInformationFactory.sample(riskQuestions = emptyList())
 
         assertFailsWith(
             IllegalArgumentException::class,

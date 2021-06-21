@@ -71,6 +71,6 @@ internal class HomeRiskScoreServiceTest {
 
         val riskEvaluation = HomeRiskScoreService().calculate(userInformation)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
+        assertEquals(InsuranceScore.RESPONSIBLE, riskEvaluation)
     }
 }
