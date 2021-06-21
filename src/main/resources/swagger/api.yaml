@@ -1,926 +1,106 @@
 openapi: 3.0.0
 info:
-  title: Conduit
+  title: Origin Backend Take-Home Assignment
   description: |-
-    Collection for testing the Conduit API
-    https://github.com/Rudge/kotlin-javalin-realworld-example-app
-  contact: {}
+    Origin offers its users an insurance package personalized to their specific needs without
+    requiring the user to understand anything about insurance. This allows Origin to act as their
+    de facto insurance advisor.
+  contact: { }
   version: '1.0'
 servers:
-  - url: 'http://localhost:7000/api'
-    variables: {}
+  - url: 'http://localhost:7000/'
+    variables: { }
 paths:
-  /users:
+  /calculate:
     post:
       tags:
-        - Auth
-      summary: Register
-      operationId: Register
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
+        - insurance
+      summary: >
+        Endpoint that receives a JSON payload with the user information and returns her risk profile
+        (JSON again) – you don’t have to worry about the frontend of the application.
+      operationId: calculateInsuranceAdvisor
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
-            example:
-              user:
-                email: '{{EMAIL}}'
-                password: '{{PASSWORD}}'
-                username: '{{USERNAME}}'
+              $ref: '#/components/schemas/UserInformation'
         required: true
-        x-send-file-in-body: false
       responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-  /users/login:
-    post:
-      tags:
-        - Auth
-      summary: Login
-      operationId: Login
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-            example:
-              user:
-                email: '{{EMAIL}}'
-                password: '{{PASSWORD}}'
-        required: true
-        x-send-file-in-body: false
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-  /user:
-    get:
-      tags:
-        - Auth
-      summary: Current User
-      operationId: CurrentUser
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-    put:
-      tags:
-        - Auth
-      summary: Update User
-      operationId: UpdateUser
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateUserRequest'
-            example:
-              user:
-                email: '{{EMAIL}}'
-        required: true
-        x-send-file-in-body: false
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  /articles:
-    get:
-      tags:
-        - Articles
-      summary: All Articles
-      operationId: AllArticles
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-    post:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Create Article
-      operationId: CreateArticle
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateArticleRequest'
-            example:
-              article:
-                title: How to train your dragon
-                description: Ever wonder how?
-                body: Very carefully.
-                tagList:
-                  - dragons
-                  - training
-        required: true
-        x-send-file-in-body: false
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  /articles/feed:
-    get:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Feed
-      operationId: Feed
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  '/articles/{slug}':
-    get:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Single Article by slug
-      operationId: SingleArticlebyslug
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-    put:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Update Article
-      operationId: UpdateArticle
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateArticleRequest'
-            example:
-              article:
-                body: With two hands
-        required: true
-        x-send-file-in-body: false
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-    delete:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Delete Article
-      operationId: DeleteArticle
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  '/articles/{slug}/favorite':
-    post:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Favorite Article
-      operationId: FavoriteArticle
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-    delete:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Unfavorite Article
-      operationId: UnfavoriteArticle
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  '/articles/{slug}/comments':
-    post:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Create Comment for Article
-      operationId: CreateCommentforArticle
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateCommentforArticleRequest'
-            example:
-              comment:
-                body: Thank you so much!
-        required: true
-        x-send-file-in-body: false
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-    get:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: All Comments for Article
-      operationId: AllCommentsforArticle
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  '/articles/{slug}/comments/{commentId}':
-    delete:
-      tags:
-        - 'Articles, Favorite, Comments'
-      summary: Delete Comment for Article
-      operationId: DeleteCommentforArticle
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: slug
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-        - name: commentId
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  '/profiles/celeb_{USERNAME}':
-    get:
-      tags:
-        - Profiles
-      summary: Profile
-      operationId: Profile
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: USERNAME
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  '/profiles/celeb_{USERNAME}/follow':
-    post:
-      tags:
-        - Profiles
-      summary: Follow Profile
-      operationId: FollowProfile
-      parameters:
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: USERNAME
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FollowProfileRequest'
-            example:
-              user:
-                email: '{{EMAIL}}'
-        required: true
-        x-send-file-in-body: false
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-    delete:
-      tags:
-        - Profiles
-      summary: Unfollow Profile
-      operationId: UnfollowProfile
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-        - name: Authorization
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: 'Token {{token}}'
-        - name: USERNAME
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
-      security: []
-  /tags:
-    get:
-      tags:
-        - Tags
-      summary: All Tags
-      operationId: AllTags
-      parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: application/json
-        - name: X-Requested-With
-          in: header
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: XMLHttpRequest
-      responses:
-        '200':
-          description: ''
-          headers: {}
-      deprecated: false
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskEvaluation'
 components:
   schemas:
-    RegisterRequest:
-      title: RegisterRequest
+    UserInformation:
       required:
-        - user
+        - age
+        - dependents
+        - income
+        - marital_status
+        - risk_questions
       type: object
       properties:
-        user:
-          $ref: '#/components/schemas/User'
-      example:
-        user:
-          email: '{{EMAIL}}'
-          password: '{{PASSWORD}}'
-          username: '{{USERNAME}}'
-    User:
-      title: User
-      required:
-        - email
-        - password
-        - username
-      type: object
-      properties:
-        email:
+        age:
+          type: integer
+        dependents:
+          type: integer
+        house:
+          $ref: '#/components/schemas/House'
+        income:
+          type: integer
+        marital_status:
           type: string
-        password:
-          type: string
-        username:
-          type: string
-      example:
-        email: '{{EMAIL}}'
-        password: '{{PASSWORD}}'
-        username: '{{USERNAME}}'
-    LoginRequest:
-      title: LoginRequest
-      required:
-        - user
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User1'
-      example:
-        user:
-          email: '{{EMAIL}}'
-          password: '{{PASSWORD}}'
-    User1:
-      title: User1
-      required:
-        - email
-        - password
-      type: object
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-      example:
-        email: '{{EMAIL}}'
-        password: '{{PASSWORD}}'
-    LoginandRememberTokenRequest:
-      title: LoginandRememberTokenRequest
-      required:
-        - user
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User1'
-      example:
-        user:
-          email: '{{EMAIL}}'
-          password: '{{PASSWORD}}'
-    UpdateUserRequest:
-      title: UpdateUserRequest
-      required:
-        - user
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User3'
-      example:
-        user:
-          email: '{{EMAIL}}'
-    User3:
-      title: User3
-      required:
-        - email
-      type: object
-      properties:
-        email:
-          type: string
-      example:
-        email: '{{EMAIL}}'
-    CreateArticleRequest:
-      title: CreateArticleRequest
-      required:
-        - article
-      type: object
-      properties:
-        article:
-          $ref: '#/components/schemas/Article'
-      example:
-        article:
-          title: How to train your dragon
-          description: Ever wonder how?
-          body: Very carefully.
-          tagList:
-            - dragons
-            - training
-    Article:
-      title: Article
-      required:
-        - title
-        - description
-        - body
-        - tagList
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        body:
-          type: string
-        tagList:
+          enum:
+            - married
+            - single
+        risk_questions:
           type: array
           items:
-            type: string
-      example:
-        title: How to train your dragon
-        description: Ever wonder how?
-        body: Very carefully.
-        tagList:
-          - dragons
-          - training
-    UpdateArticleRequest:
-      title: UpdateArticleRequest
+            type: boolean
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+
+    House:
       required:
-        - article
+        - ownership_status
       type: object
       properties:
-        article:
-          $ref: '#/components/schemas/Article1'
-      example:
-        article:
-          body: With two hands
-    Article1:
-      title: Article1
-      required:
-        - body
-      type: object
-      properties:
-        body:
+        ownership_status:
           type: string
-      example:
-        body: With two hands
-    CreateCommentforArticleRequest:
-      title: CreateCommentforArticleRequest
+          enum:
+            - owned
+            - mortgaged
+    Vehicle:
       required:
-        - comment
+        - year
       type: object
       properties:
-        comment:
-          $ref: '#/components/schemas/Comment'
-      example:
-        comment:
-          body: Thank you so much!
-    Comment:
-      title: Comment
+        year:
+          type: integer
+    RiskEvaluation:
       required:
-        - body
+        - auto
+        - disability
+        - home
+        - life
       type: object
       properties:
-        body:
-          type: string
-      example:
-        body: Thank you so much!
-    RegisterCelebRequest:
-      title: RegisterCelebRequest
-      required:
-        - user
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-      example:
-        user:
-          email: 'celeb_{{EMAIL}}'
-          password: '{{PASSWORD}}'
-          username: 'celeb_{{USERNAME}}'
-    FollowProfileRequest:
-      title: FollowProfileRequest
-      required:
-        - user
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User3'
-      example:
-        user:
-          email: '{{EMAIL}}'
-tags:
-  - name: Auth
-  - name: Articles
-  - name: 'Articles, Favorite, Comments'
-  - name: Profiles
-  - name: Tags
+        auto:
+          $ref: '#/components/schemas/InsuranceScore'
+        disability:
+          $ref: '#/components/schemas/InsuranceScore'
+        home:
+          $ref: '#/components/schemas/InsuranceScore'
+        life:
+          $ref: '#/components/schemas/InsuranceScore'
+    InsuranceScore:
+      type: string
+      enum:
+        - ineligible
+        - economic
+        - regular
+        - responsible
+

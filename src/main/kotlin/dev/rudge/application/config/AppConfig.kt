@@ -2,6 +2,7 @@ package dev.rudge.application.config
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import dev.rudge.application.web.controllers.ErrorExceptionMapping
 import dev.rudge.application.web.controllers.RiskEvaluationController
 import dev.rudge.domain.service.AutoRiskScoreService
 import dev.rudge.domain.service.DisabilityRiskScoreService
@@ -45,6 +46,7 @@ object AppConfig : KoinComponent {
                 StandAloneContext.stopKoin()
             }
         }
+        ErrorExceptionMapping.register(app)
         register(app)
         return app
     }

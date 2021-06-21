@@ -1,4 +1,4 @@
-package dev.rudge
+package dev.rudge.application
 
 import dev.rudge.application.config.AppConfig
 

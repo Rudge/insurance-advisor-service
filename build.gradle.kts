@@ -9,6 +9,7 @@ val swaggerCoreVersion = "2.0.9"
 val unirestVersion = "1.4.9"
 val jacksonVersion = "2.10.1"
 
+val mainPkgAndClass = "dev.rudge.application.AppKt"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -45,8 +46,6 @@ val componentTestTask = tasks.create("integrationTest", Test::class) {
 
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
-
-    shouldRunAfter("test")
 }
 
 dependencies {
@@ -83,3 +82,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
+tasks.test {
+    finalizedBy("integrationTest")
+}
+
+application {
+    mainClassName = mainPkgAndClass
+}
