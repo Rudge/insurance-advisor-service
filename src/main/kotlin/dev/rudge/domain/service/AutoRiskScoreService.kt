@@ -2,6 +2,7 @@ package dev.rudge.domain.service
 
 import dev.rudge.domain.entities.InsuranceScore
 import dev.rudge.domain.entities.UserInformation
+import dev.rudge.domain.entities.Vehicle
 import java.time.LocalDate
 
 class AutoRiskScoreService : RiskScoreService {
@@ -11,18 +12,17 @@ class AutoRiskScoreService : RiskScoreService {
         userInformation.house == null -> InsuranceScore.INELIGIBLE
         else -> {
             var score = userInformation.getBaseScore()
-            if (userInformation.age < 30) {
-                score -= 2
-            } else if (userInformation.age in 30..40) {
-                score--
-            }
-            if (userInformation.income > 200_000) {
-                score--
-            }
-            if (LocalDate.now().year - userInformation.vehicle.year <= 5) {
-                score++
-            }
+            score = calculateScoreByAge(userInformation, score)
+            score = calculateScoreByIncome(userInformation, score)
+            score = calculateScoreByVehicleYear(userInformation.vehicle, score)
             InsuranceScore.getByScore(score)
         }
     }
+
+    private fun calculateScoreByVehicleYear(
+        vehicle: Vehicle,
+        score: Int
+    ) = takeIf { LocalDate.now().year - vehicle.year <= 5 }?.let {
+        score + 1
+    } ?: score
 }

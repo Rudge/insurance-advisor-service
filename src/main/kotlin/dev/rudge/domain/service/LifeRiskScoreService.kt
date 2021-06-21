@@ -9,21 +9,18 @@ class LifeRiskScoreService : RiskScoreService {
         userInformation.age > 60 -> InsuranceScore.INELIGIBLE
         else -> {
             var score = userInformation.getBaseScore()
-            if (userInformation.age < 30) {
-                score -= 2
-            } else if (userInformation.age in 30..40) {
-                score--
-            }
-            if (userInformation.income > 200_000) {
-                score--
-            }
-            if (userInformation.dependents > 0) {
-                score++
-            }
-            if (userInformation.maritalStatus == MaritalStatus.MARRIED) {
-                score++
-            }
+            score = calculateScoreByAge(userInformation, score)
+            score = calculateScoreByIncome(userInformation, score)
+            score = calculateScoreByDependents(userInformation, score)
+            score = calculateScoreByMaritalStatus(userInformation, score)
             InsuranceScore.getByScore(score)
         }
     }
+
+    private fun calculateScoreByMaritalStatus(
+        userInformation: UserInformation,
+        score: Int
+    ) = takeIf { userInformation.maritalStatus == MaritalStatus.MARRIED }?.let {
+        score + 1
+    } ?: score
 }

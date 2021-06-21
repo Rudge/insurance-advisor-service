@@ -19,8 +19,22 @@ plugins {
     application
 }
 
+val artifactoryRepository: String by project
+val artifactoryUser: String by project
+val artifactoryPassword: String by project
+
 repositories {
-    jcenter()
+
+    repositories {
+        maven {
+            setUrl(artifactoryRepository)
+            credentials {
+                username = artifactoryUser
+                password = artifactoryPassword
+            }
+        }
+        mavenLocal()
+    }
 }
 
 // The order from registering the source set up to the configuration of the component test as a runtime only
