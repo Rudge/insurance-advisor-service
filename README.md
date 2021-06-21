@@ -1,3 +1,4 @@
+[![Run build and tests. If successful, deploy.](https://github.com/Rudge/insurance-advisor-service/actions/workflows/build_test.yml/badge.svg)](https://github.com/Rudge/insurance-advisor-service/actions/workflows/build_test.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce4d22c3f2c342638c92b4dc1e8ce955)](https://app.codacy.com/gh/Rudge/insurance-advisor-service?utm_source=github.com&utm_medium=referral&utm_content=Rudge/insurance-advisor-service&utm_campaign=Badge_Grade_Settings)
 [![BCH compliance](https://bettercodehub.com/edge/badge/Rudge/insurance-advisor-service?branch=main)](https://bettercodehub.com/)
 

@@ -1,0 +1,35 @@
+name: Run build and tests.
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            google-chrome-stable_current_amd64.deb
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build, Test and hom Deloy with Gradle
+        run: ./gradlew clean test integrationTest
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: local-integration-test-reports
+          path: ./**/build/reports
