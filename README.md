@@ -8,8 +8,11 @@ This project is a proof of concept to calculate the score of user for some lines
 The application built in:
 
 - [Kotlin](https://github.com/JetBrains/kotlin) as programming language
+
 - [Javalin](https://github.com/tipsy/javalin) as web framework
+
 - [Koin](https://github.com/InsertKoinIO/koin) as dependency injection
+
 - [Jackson](https://github.com/FasterXML/jackson-module-kotlin) as data bind
   serialization/deserialization
 
@@ -39,7 +42,7 @@ Integration Tests:
 
 You need just JVM installed.
 
-#### Build:
+#### Build
 
 The build run unit.
 
@@ -53,7 +56,7 @@ The integration test can run with:
 
 > ./gradlew integrationTest
 
-### Start the server:
+### Start the server
 
 This command start the server to use locally.
 
