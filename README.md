@@ -8,24 +8,21 @@ This project is a proof of concept to calculate the score of user for some lines
 
 The application built in:
 
-- [Kotlin](https://github.com/JetBrains/kotlin) as programming language
-
-- [Javalin](https://github.com/tipsy/javalin) as web framework
-
-- [Koin](https://github.com/InsertKoinIO/koin) as dependency injection
-
-- [Jackson](https://github.com/FasterXML/jackson-module-kotlin) as data bind
+* [Kotlin](https://github.com/JetBrains/kotlin) as programming language
+* [Javalin](https://github.com/tipsy/javalin) as web framework
+* [Koin](https://github.com/InsertKoinIO/koin) as dependency injection
+* [Jackson](https://github.com/FasterXML/jackson-module-kotlin) as data bind
   serialization/deserialization
 
 Unit Tests:
 
-- [kotlin.test](https://kotlinlang.org/api/latest/kotlin.test/)
+* [kotlin.test](https://kotlinlang.org/api/latest/kotlin.test/)
 
 Integration Tests:
 
-- [RestAssured](https://rest-assured.io/) to call the endpoints in tests and assert response data
+* [RestAssured](https://rest-assured.io/) to call the endpoints in tests and assert response data
 
-#### Structure
+## Structure
 
       + config/
         All app setups. Javalin and DI(Koin)
@@ -39,11 +36,11 @@ Integration Tests:
         
       - App.kt <- The main class
 
-# Getting started
+## Getting started
 
 You need just JVM installed.
 
-#### Build
+### Build
 
 The build run unit.
 
