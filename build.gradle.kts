@@ -46,6 +46,8 @@ val componentTestTask = tasks.create("integrationTest", Test::class) {
 
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
+
+    mustRunAfter("test")
 }
 
 dependencies {
@@ -62,13 +64,10 @@ dependencies {
     implementation("org.webjars:swagger-ui:$swaggerVersion")
     implementation("io.swagger.core.v3:swagger-core:$swaggerCoreVersion")
 
-    // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
     testImplementation("io.mockk:mockk:1.10.2")
 
-    integrationTestImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    integrationTestImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
     integrationTestImplementation("io.rest-assured:kotlin-extensions:4.3.0")
 }
 
@@ -82,8 +81,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-tasks.test {
-    finalizedBy("integrationTest")
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 application {

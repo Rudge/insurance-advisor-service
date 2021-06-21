@@ -6,22 +6,22 @@ import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 
 class InsuranceAdvisorClientTest {
 
     companion object {
         private val app = AppConfig.setup()
 
-        @BeforeClass
+        @BeforeAll
         @JvmStatic
         fun beforeAll() {
             app.start()
         }
 
-        @AfterClass
+        @AfterAll
         @JvmStatic
         fun afterAll() {
             app.stop()

@@ -3,8 +3,10 @@ package dev.rudge.domain.service
 import dev.rudge.domain.entities.InsuranceScore
 import dev.rudge.domain.entities.MaritalStatus
 import dev.rudge.domain.entities.UserInformationFactory
-import kotlin.test.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 
 internal class LifeRiskScoreServiceTest {
 
@@ -17,51 +19,97 @@ internal class LifeRiskScoreServiceTest {
         assertEquals(InsuranceScore.INELIGIBLE, riskEvaluation)
     }
 
-    @Test
-    fun `given an user information with the age is under 30 years old and 3 risk answers true when calculate risk score should deduct 2 risk points and return score REGULAR`() {
-        val userInformation = UserInformationFactory.sample(age = 29)
+    @TestFactory
+    fun `given an user information with the age is under 30 years old and risk answers when calculate risk score should deduct 2 risk points and return score expected`() =
+        listOf(
+            Triple(1, listOf(false, false, false), InsuranceScore.ECONOMIC),
+            Triple(13, listOf(false, false, true), InsuranceScore.ECONOMIC),
+            Triple(20, listOf(true, false, true), InsuranceScore.ECONOMIC),
+            Triple(29, listOf(true, true, true), InsuranceScore.REGULAR),
+        ).map { (age, answers, score) ->
+            dynamicTest("given an user information with the age $age years old and risk answers $answers when calculate risk score should return $score") {
 
-        val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
+                val userInformation =
+                    UserInformationFactory.sample(age = age, riskQuestions = answers)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
-    }
+                val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
 
-    @Test
-    fun `given an user information with the age is between 30 and 40 years old and 3 risk answers true when calculate risk score should deduct 1 risk points and return score REGULAR`() {
-        val userInformation = UserInformationFactory.sample(age = 31)
+                assertEquals(score, riskEvaluation)
+            }
+        }
 
-        val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
+    @TestFactory
+    fun `given an user information with the age is between 30 and 40 years old and risk answers when calculate risk score should deduct 1 risk points and return score expected`() =
+        listOf(
+            Triple(30, listOf(false, false, false), InsuranceScore.ECONOMIC),
+            Triple(33, listOf(false, false, true), InsuranceScore.ECONOMIC),
+            Triple(37, listOf(true, false, true), InsuranceScore.REGULAR),
+            Triple(40, listOf(true, true, true), InsuranceScore.REGULAR),
+        ).map { (age, answers, score) ->
+            dynamicTest("given an user information with the age $age years old and risk answers $answers when calculate risk score should return $score") {
+                val userInformation =
+                    UserInformationFactory.sample(age = age, riskQuestions = answers)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
-    }
+                val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
 
-    @Test
-    fun `given an user information with the income above 200K and 3 risk answers true when calculate risk score should deduct 1 risk points and return score REGULAR`() {
-        val userInformation =
-            UserInformationFactory.sample(income = 201_000)
+                assertEquals(score, riskEvaluation)
+            }
+        }
 
-        val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
+    @TestFactory
+    fun `given an user information with the income above 200K and risk answers when calculate risk score should deduct 1 risk points and return score expected`() =
+        listOf(
+            Triple(201_000, listOf(false, false, false), InsuranceScore.REGULAR),
+            Triple(231_000, listOf(false, false, true), InsuranceScore.REGULAR),
+            Triple(300_000, listOf(true, false, true), InsuranceScore.REGULAR),
+            Triple(500_000, listOf(true, true, true), InsuranceScore.REGULAR),
+        ).map { (income, answers, score) ->
+            dynamicTest("given an user information with the income $income years old and risk answers $answers when calculate risk score should return $score") {
+                val userInformation =
+                    UserInformationFactory.sample(income = 201_000)
 
-        assertEquals(InsuranceScore.REGULAR, riskEvaluation)
-    }
+                val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
 
-    @Test
-    fun `given an user information with dependents and 3 risk answers true when calculate risk score should deduct 1 risk points and return score REGULAR`() {
-        val userInformation =
-            UserInformationFactory.sample(dependents = 1)
+                assertEquals(score, riskEvaluation)
+            }
+        }
 
-        val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
+    @TestFactory
+    fun `given an user information with dependents and risk answers when calculate risk score should deduct 1 risk points and return score expected`() =
+        listOf(
+            Triple(1, listOf(false, false, false), InsuranceScore.REGULAR),
+            Triple(2, listOf(false, false, true), InsuranceScore.REGULAR),
+            Triple(3, listOf(true, false, true), InsuranceScore.RESPONSIBLE),
+            Triple(4, listOf(true, true, true), InsuranceScore.RESPONSIBLE),
+        ).map { (dependents, answers, score) ->
+            dynamicTest("given an user information with $dependents dependents and risk answers $answers when calculate risk score should return $score") {
+                val userInformation =
+                    UserInformationFactory.sample(dependents = dependents, riskQuestions = answers)
 
-        assertEquals(InsuranceScore.RESPONSIBLE, riskEvaluation)
-    }
+                val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
 
-    @Test
-    fun `given an user information with married status and 3 risk answers true when calculate risk score should deduct 1 risk points and return score REGULAR`() {
-        val userInformation =
-            UserInformationFactory.sample(maritalStatus = MaritalStatus.MARRIED)
+                assertEquals(score, riskEvaluation)
+            }
+        }
 
-        val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
+    @TestFactory
+    fun `given an user information with married status and risk answers when calculate risk score should deduct 1 risk points and return score expected`() =
+        listOf(
+            listOf(false, false, false) to InsuranceScore.REGULAR,
+            listOf(false, false, true) to InsuranceScore.REGULAR,
+            listOf(true, false, true) to InsuranceScore.RESPONSIBLE,
+            listOf(true, true, true) to InsuranceScore.RESPONSIBLE
+        ).map { (answers, score) ->
+            dynamicTest("given an user information with married status and risk answers $answers when calculate risk score should return $score") {
+                val userInformation =
+                    UserInformationFactory.sample(
+                        maritalStatus = MaritalStatus.MARRIED,
+                        riskQuestions = answers
+                    )
 
-        assertEquals(InsuranceScore.RESPONSIBLE, riskEvaluation)
-    }
+                val riskEvaluation = LifeRiskScoreService().calculate(userInformation)
+
+                assertEquals(score, riskEvaluation)
+            }
+        }
 }

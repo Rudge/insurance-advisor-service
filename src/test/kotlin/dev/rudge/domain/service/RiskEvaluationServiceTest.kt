@@ -3,9 +3,9 @@ package dev.rudge.domain.service
 import dev.rudge.domain.entities.UserInformationFactory
 import io.mockk.clearAllMocks
 import io.mockk.mockk
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class RiskEvaluationServiceTest {
 
@@ -20,7 +20,7 @@ internal class RiskEvaluationServiceTest {
         lifeRiskScoreService
     )
 
-    @BeforeTest
+    @BeforeEach
     fun before() {
         clearAllMocks()
     }
@@ -29,8 +29,7 @@ internal class RiskEvaluationServiceTest {
     fun `given an user information with age less than 0 when calculate risk should throws exception`() {
         val userInformation = UserInformationFactory.sample(age = -1)
 
-        assertFailsWith(
-            IllegalArgumentException::class,
+        assertThrows<IllegalArgumentException>(
             "Invalid age, must be equal or greater than 0!"
         ) {
             riskEvaluationService.calculate(userInformation)
@@ -42,8 +41,7 @@ internal class RiskEvaluationServiceTest {
         val userInformation =
             UserInformationFactory.sample(dependents = -1)
 
-        assertFailsWith(
-            IllegalArgumentException::class,
+        assertThrows<IllegalArgumentException>(
             "Invalid dependents, must be equal or greater than 0!"
         ) {
             riskEvaluationService.calculate(userInformation)
@@ -55,8 +53,7 @@ internal class RiskEvaluationServiceTest {
         val userInformation =
             UserInformationFactory.sample(income = -1)
 
-        assertFailsWith(
-            IllegalArgumentException::class,
+        assertThrows<IllegalArgumentException>(
             "Invalid income, must be equal or greater than 0!"
         ) {
             riskEvaluationService.calculate(userInformation)
@@ -67,8 +64,7 @@ internal class RiskEvaluationServiceTest {
     fun `given an user information without risk answers when calculate risk should throws exception`() {
         val userInformation = UserInformationFactory.sample(riskQuestions = emptyList())
 
-        assertFailsWith(
-            IllegalArgumentException::class,
+        assertThrows<IllegalArgumentException>(
             "Invalid risk answers, must have 3 answers!"
         ) {
             riskEvaluationService.calculate(userInformation)

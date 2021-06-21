@@ -39,15 +39,25 @@ Integration Tests:
 
 You need just JVM installed.
 
-The server configured to start on [7000](http://localhost:7000/) with empty context, but you can
-change in `koin.properties`.
-
 #### Build:
 
-The build run unit and integration tests too.
+The build run unit.
 
 > ./gradlew clean build
 
-#### Start the server:
+The unit test can run just with:
+
+> ./gradlew test
+
+The integration test can run with:
+
+> ./gradlew integrationTest
+
+### Start the server:
+
+This command start the server to use locally.
+
+The server configured to start on [7000](http://localhost:7000/) with empty context, but you can
+change in `koin.properties`.
 
 > ./gradlew run
