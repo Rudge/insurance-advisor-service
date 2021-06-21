@@ -2,6 +2,7 @@ package dev.rudge.domain.service
 
 import dev.rudge.domain.entities.InsuranceScore
 import dev.rudge.domain.entities.UserInformation
+import java.time.LocalDate
 
 class AutoRiskScoreService : RiskScoreService {
     override fun calculate(userInformation: UserInformation) = when {
@@ -18,7 +19,7 @@ class AutoRiskScoreService : RiskScoreService {
             if (userInformation.income > 200_000) {
                 score--
             }
-            if (userInformation.vehicle.year <= 5) {
+            if (LocalDate.now().year - userInformation.vehicle.year <= 5) {
                 score++
             }
             InsuranceScore.getByScore(score)

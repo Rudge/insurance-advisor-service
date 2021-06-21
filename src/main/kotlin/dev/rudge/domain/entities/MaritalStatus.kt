@@ -1,6 +1,8 @@
 package dev.rudge.domain.entities
 
-enum class MaritalStatus(val desc: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class MaritalStatus(@JsonValue val desc: String) {
     SINGLE("single"),
     MARRIED("married"),
 }

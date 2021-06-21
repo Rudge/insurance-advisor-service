@@ -1,6 +1,8 @@
 package dev.rudge.domain.entities
 
-enum class OwnershipHouseStatus(val desc: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class OwnershipHouseStatus(@JsonValue val desc: String) {
     OWNED("owned"),
     MORTGAGED("mortgaged")
 }

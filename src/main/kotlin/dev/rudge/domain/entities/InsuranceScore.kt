@@ -1,6 +1,8 @@
 package dev.rudge.domain.entities
 
-enum class InsuranceScore(val desc: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class InsuranceScore(@JsonValue val desc: String) {
     INELIGIBLE("ineligible"),
     ECONOMIC("economic"),
     REGULAR("regular"),
