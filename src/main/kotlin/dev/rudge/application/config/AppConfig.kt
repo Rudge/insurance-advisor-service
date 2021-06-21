@@ -13,37 +13,40 @@ import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder
 import io.javalin.plugin.json.JavalinJackson
 import org.eclipse.jetty.server.Server
-import org.koin.core.KoinProperties
-import org.koin.dsl.module.module
-import org.koin.log.EmptyLogger
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.StandAloneContext
-import org.koin.standalone.getProperty
-import org.koin.standalone.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.core.logger.EmptyLogger
+import org.koin.dsl.module
+import org.koin.fileProperties
 
 object AppConfig : KoinComponent {
-    private val riskEvaluationController: RiskEvaluationController by inject()
+    private val properties: Map<String, String> by inject()
 
     fun setup(): Javalin {
-        StandAloneContext.startKoin(
-            listOf(riskModule),
-            KoinProperties(true, true),
-            logger = EmptyLogger()
-        )
+        startKoin {
+            modules(riskModule)
+            logger(EmptyLogger())
+            fileProperties()
+        }
         this.configureMapper()
         val app = Javalin.create { config ->
             config.apply {
                 enableWebjars()
-                contextPath = getProperty("context")
                 addStaticFiles("/swagger")
                 addSinglePageRoot("", "/swagger/swagger-ui.html")
-                server {
-                    Server(getProperty("server_port") as Int)
+
+                properties["context"]?.apply { contextPath = this }
+                properties["server_port"]?.apply {
+                    server {
+                        Server(this.toInt())
+                    }
                 }
             }
         }.events {
             it.serverStopping {
-                StandAloneContext.stopKoin()
+                stopKoin()
             }
         }
         ErrorExceptionMapping.register(app)
@@ -52,6 +55,7 @@ object AppConfig : KoinComponent {
     }
 
     private fun register(app: Javalin) {
+        val riskEvaluationController: RiskEvaluationController by inject()
         app.routes {
             ApiBuilder.post("calculate", riskEvaluationController::calculate)
         }
@@ -64,6 +68,12 @@ object AppConfig : KoinComponent {
         single { DisabilityRiskScoreService() }
         single { HomeRiskScoreService() }
         single { LifeRiskScoreService() }
+        single {
+            mapOf(
+                "context" to getProperty("context"),
+                "server_port" to getProperty("server_port")
+            )
+        }
     }
 
     private fun configureMapper() {

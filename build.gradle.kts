@@ -3,7 +3,7 @@ version = "1.0-SNAPSHOT"
 
 val javalinVersion = "3.8.0"
 val slf4jVersion = "1.7.28"
-val koinVersion = "1.0.2"
+val koinVersion = "3.1.0"
 val swaggerVersion = "3.24.3"
 val swaggerCoreVersion = "2.0.9"
 val unirestVersion = "1.4.9"
@@ -60,7 +60,7 @@ dependencies {
     implementation("io.javalin:javalin:$javalinVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
-    implementation("org.koin:koin-core:$koinVersion")
+    implementation("io.insert-koin:koin-core:$koinVersion")
     implementation("org.webjars:swagger-ui:$swaggerVersion")
     implementation("io.swagger.core.v3:swagger-core:$swaggerCoreVersion")
 
